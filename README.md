@@ -3,19 +3,19 @@ docker-informix
 
 Debian/Ubuntu based docker container with IBM Informix Dynamic Server.
 
-The Informix Database Server is offered in a number of editions, including free developer editions, editions for small and mid-sized business, 
-and editions supporting the complete feature set and designed to be used in support of the largest enterprise applications. 
+The Informix Database Server is offered in a number of editions, including free developer editions, editions for small and mid-sized business,
+and editions supporting the complete feature set and designed to be used in support of the largest enterprise applications.
 If you are confused which version of Informix choose use [Informix feature description](http://www.ibm.com/developerworks/data/library/techarticle/dm-0801doe/index.html#table).
 
-Informix is generally considered to be optimized for environments with very low or no database administration, 
-including use as an embedded database. It has a long track record of supporting very high transaction rates 
-and providing uptime characteristics needed for mission critical applications such as manufacturing lines 
-and reservation systems. Informix has been widely deployed in the retail sector, where the low administration 
+Informix is generally considered to be optimized for environments with very low or no database administration,
+including use as an embedded database. It has a long track record of supporting very high transaction rates
+and providing uptime characteristics needed for mission critical applications such as manufacturing lines
+and reservation systems. Informix has been widely deployed in the retail sector, where the low administration
 overhead makes it useful for in-store deployments.
 
 To use this project you have to [download Informix installation files from IBM Informix Download page](http://www-01.ibm.com/software/data/informix/downloads.html) on your own (registration required).
 
-Recently IBM announced cloud platform called [Bluemix](http://bluemix.net/), but there is no Informix Database Software on this service (there is PostgreSQL, MySQL, MongoDB) so I have created this project to provide Docker container with Informix. 
+Recently IBM announced cloud platform called [Bluemix](http://bluemix.net/), but there is no Informix Database Software on this service (there is PostgreSQL, MySQL, MongoDB) so I have created this project to provide Docker container with Informix.
 
 I am not sure if this container is production ready. I am using it for my developement and testing.
 
@@ -63,6 +63,12 @@ sudo docker run -it -v "/home/informix/data/" -p 9088:9088 --name informix docke
 sudo docker run -it -v "/home/informix/data/" -p 9088:9088 --name informix -e DB_USER=test -e DB_PASS=test -e DB_NAME=test docker-informix
 ```
 
+### The same as above but also enable CDC
+
+```bash
+sudo docker run -it -v "/home/informix/data/" -p 9088:9088 --name informix -e DB_USER=test -e DB_PASS=test -e DB_NAME=test -e ENABLE_CDC=YES docker-informix
+```
+
 ### Using created container (Informix Database)
 
 ```
@@ -75,15 +81,15 @@ johny@ThinkPad:~/$ docker start 00e73b00c498
 
 johny@ThinkPad:~/$ docker attach 00e73b00c498
 
-IDS-12.10 dev: 
-IDS-12.10 dev: 
-IDS-12.10 dev: 
+IDS-12.10 dev:
+IDS-12.10 dev:
+IDS-12.10 dev:
 ```
 
 Connect to your Informix database
 ---------------------------------------
 
-For connecting to Informix Database you can use [SQLWorkbench/J](http://www.sql-workbench.net/) with additional 
+For connecting to Informix Database you can use [SQLWorkbench/J](http://www.sql-workbench.net/) with additional
 JDBC Drivers which are in Informix Bundle or can be downloaded separetly from [IBM Informix JDBC Driver Download Page](http://www14.software.ibm.com/webapp/download/search.jsp?go=y&rs=ifxjdbc).
 
 JDBC connect string
@@ -118,7 +124,7 @@ Available and supported Informix Editions for Docker (x86_64 versions only)
  * :white_check_mark: - Installation completed succesfully
  * :x: - Instalation failed
  * :pushpin: - Notes
- 
+
 ### Additional notes:
 
 1. Informix installation script supports only Informix 11.70 and later.
@@ -126,20 +132,20 @@ Available and supported Informix Editions for Docker (x86_64 versions only)
 2. Informix installation script supports only Debian 7 Wheezy and Ubuntu 14.04 LTS+ OS.
 
 3. It is known that Informix installation script runs smoothly on Ubuntu 13.10, Ubuntu 12.04 but I will not support it officialy.
-   Other versions of Ubuntu (Ubuntu 13.04, Ubuntu 12.10, Ubuntu 10.04) are not working due to end of support from Canoncial. 
+   Other versions of Ubuntu (Ubuntu 13.04, Ubuntu 12.10, Ubuntu 10.04) are not working due to end of support from Canoncial.
 
 4. If your Informix version is released after 11.50FC9DE it will be probably also supported.
 
-For more information about this refer to [supported platforms for Informix](http://www-01.ibm.com/support/docview.wss?uid=swg27013343#linux) on IBM website 
+For more information about this refer to [supported platforms for Informix](http://www-01.ibm.com/support/docview.wss?uid=swg27013343#linux) on IBM website
 and [Ubuntu LTS Release cycle](https://wiki.ubuntu.com/LTS).
 
 How container building looks like
 -----------------------------------
 
 ````
-johny@ThinkPad:~/Pulpit/projects/github$ sudo docker build -t docker-informix docker-informix 
+johny@ThinkPad:~/Pulpit/projects/github$ sudo docker build -t docker-informix docker-informix
 Sending build context to Docker daemon 154.6 kB
-Sending build context to Docker daemon 
+Sending build context to Docker daemon
 Step 0 : FROM debian:wheezy
  ---> f6fab3b798be
 Step 1 : MAINTAINER Tomasz Gaweda
@@ -226,7 +232,7 @@ How does starting container for the first time looks like?
 johny@ThinkPad:~/$ sudo docker run -it -v "/home/informix/data/" -p 9088:9088 --name informix -e DB_USER=test -e DB_PASS=test -e DB_NAME=test docker-informix
 >>>    Create data directory structure in /home/informix//data/ (ifx initialization)
 >>>    Create user "test"...
->>>    Starting up the IBM Informix Database (dev) ... 
+>>>    Starting up the IBM Informix Database (dev) ...
 *** Startup of dev SUCCESS ***
 >>>    Create database "test"...
 >>>    Grant DBA to database "test" for user "test"...
@@ -239,7 +245,7 @@ IBM Informix Dynamic Server Version 12.10.FC4DE Software Serial Number AAA#B0000
   #################################################
 
 IDS-12.10 dev: exit
->>>    Stopping the IBM Informix Database (dev) ... 
+>>>    Stopping the IBM Informix Database (dev) ...
 *** Shutdown of dev SUCCESS ***
 ```
 
@@ -254,7 +260,7 @@ c7cc39dd2e7f        docker-informix:latest   "/bin/sh -c '/bin/ba   5 minutes ag
 
 
 johny@ThinkPad:~/$ docker start -ai c7cc39dd2e7f
->>>    Starting up the IBM Informix Database (dev) ... 
+>>>    Starting up the IBM Informix Database (dev) ...
 *** Startup of dev SUCCESS ***
 IBM Informix Dynamic Server Version 12.10.FC4DE Software Serial Number AAA#B000000
   #################################################
@@ -265,7 +271,7 @@ IBM Informix Dynamic Server Version 12.10.FC4DE Software Serial Number AAA#B0000
   #################################################
 
 IDS-12.10 dev: exit
->>>    Stopping up the IBM Informix Database (dev) ... 
+>>>    Stopping up the IBM Informix Database (dev) ...
 *** Shutdown of dev SUCCESS ***
 ```
 
@@ -273,10 +279,10 @@ IDS-12.10 dev: exit
 Is docker-informix container ready for production use?
 --------------------------------------------------------
 
-This Dockerfile is created with "best practices" in mind but if you would like to deploy it as production you 
+This Dockerfile is created with "best practices" in mind but if you would like to deploy it as production you
 should read more about "data only container pattern" and docker volumes from this links [1](https://docs.docker.com/userguide/dockervolumes/), [2](https://groups.google.com/forum/#!msg/docker-user/EUndR1W5EBo/4hmJau8WyjAJ), [3](http://container42.com/2014/11/03/docker-indepth-volumes/), [4](http://container42.com/2014/11/18/data-only-container-madness/), you may also want to use docker links [5](http://learning-continuous-deployment.github.io/docker/images/dockerfile/database/persistence/volumes/linking/container/2015/05/29/docker-and-databases/).
 
-If you are planing to run it on production you should also change configuration of Informix Database - now it is almost default. 
+If you are planing to run it on production you should also change configuration of Informix Database - now it is almost default.
 For more informations please refer to [Informix Innovator-C - quick start guide](http://www.informix-dba.com/p/informix-innovator-c-quick-start-guide.html).
 
 
@@ -300,7 +306,7 @@ Informix tools which may be usefull but are not installed by default
 
 Additional references
 --------------------------
- 
+
  * [Building docker images using http cache](http://stackoverflow.com/questions/22030931/how-to-rebuild-dockerfile-quick-by-using-cache)
  * [Exposing Dockerized services](http://stackoverflow.com/questions/22111060/difference-between-expose-and-publish-in-docker)
  * [Other Informix install script](https://github.com/zephilou/ubuntu-14.04)
@@ -313,4 +319,3 @@ License:
 ---------------------
 
 License Apache License Version 2.0, January 2004 (https://tldrlegal.com/ ; http://choosealicense.com/)
-

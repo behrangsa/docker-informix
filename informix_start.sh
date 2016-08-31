@@ -47,6 +47,7 @@ fi
 DB_NAME=${DB_NAME:-}
 DB_USER=${DB_USER:-}
 DB_PASS=${DB_PASS:-}
+ENABLE_CDC=${ENABLE_CDC:-}
 
 DB_INFO_FILE="${INFORMIX_HOME}/informix_dbinfo.sh"
 IFX_CREATE="NO"
@@ -64,7 +65,7 @@ if [ "${IFX_CREATE}" = "YES" ] ; then
 	echo ">>>    Create user \"${DB_USER}\"..."
 	sudo useradd ${USER_ADD_CREATE_HOME} -d "${INFORMIX_HOME}" "${DB_USER}"  >/dev/null
 	myfatal $? "User creation failed"
-	
+
 	echo "${DB_USER}:${DB_PASS}" | sudo chpasswd
 	myfatal $? "Changing password failed"
 fi
@@ -87,8 +88,18 @@ if [ "${IFX_CREATE}" = "YES" ] ; then
 	mv "${DB_INFO_FILE}.run" "${DB_INFO_FILE}"
 fi
 
+if [ "${ENABLE_CDC}" = "YES" ] ; then
+	echo ">>>    Enabling CDC..."
+	dbaccess - /opt/IBM/informix/etc/syscdcv1.sql > /dev/null 2>&1
+	myfatal $? "ENABLING CDC FAILED"
 
-if [ -e "${DB_INFO_FILE}" ] ; then 
+	echo "GRANT DBA TO test;" | dbaccess "syscdcv1" > /dev/null 2>&1
+	myfatal $? "GRANTING DBA FOR THE CDC DATABASE FAILED"
+fi
+
+
+
+if [ -e "${DB_INFO_FILE}" ] ; then
 	source "${DB_INFO_FILE}"
 	onstat -V
 	echo -e "\t#################################################\n"\
@@ -96,10 +107,9 @@ if [ -e "${DB_INFO_FILE}" ] ; then
        	 	"\t#   database:    ${IFX_DB_NAME}                  \n"\
        	 	"\t#   user:        ${IFX_DB_USER}                  \n"\
         	"\t#   password:    ${IFX_DB_PASS}                  \n"\
-        	"\t#################################################\n" 
+        	"\t#################################################\n"
 fi
 
 # run interactive shell now it is done in Dockerfile
 # echo ">>>    Starting shell"
 # bash
-
