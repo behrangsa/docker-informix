@@ -1,1 +1,7 @@
-iif.*.tar
+# Informix Installation Files
+
+**/iif.*.tar
+
+# IDE Configuration Files
+
+.idea/
